@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+}
+
+:root {
+    --main-color: #ffb43a;
+    --hover-color: hsl(37, 100%, 54%);
+    --body-color: #1e1e2a;
+    --container-color: #2d2e37;
+    --btn-color: #35353d;
+    --text-color: #fcfeff;
+}
+
+html::-webkit-scrollbar {
+    @apply w-2 bg-transparent;
+}
+html::-webkit-scrollbar-thumb {
+    @apply bg-[var(--main-color)];
+}
+
+.scroll::-webkit-scrollbar {
+    @apply hidden;
+}
+
+::selection {
+    @apply bg-[var(--main-color)] text-[var(--text-color)];
+}
+
+a {
+    @apply no-underline;
+}
+li {
+    @apply list-none;
+}
+
+section {
+    @apply pl-0 pb-8;
+}
+
+.flex-center {
+    @apply flex items-center justify-center;
+}
+
+.container {
+    @apply max-w-[1060px] m-auto w-full;
+}
+
+.background-linear {
+    background: linear-gradient(
+        8deg,
+        hsl(240 17% 14% / 74%) 14%,
+        hsl(240 17% 14% / 14%) 44%
+    );
+}
+
+.nav-link {
+    @apply flex flex-col items-center text-gray-400;
+}
+
+.nav-link:hover {
+    @apply text-white scale-105;
+}
+
+.nav-link-title {
+    @apply text-xs pt-1 font-medium;
+}
+
+.signup-label {
+    @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
+}
+.signup-input {
+    @apply text-black flex h-10 w-full rounded-md border px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+}
