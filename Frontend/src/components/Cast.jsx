@@ -1,11 +1,11 @@
-import useCast from "../hooks/useCast";
+import { useSelector } from "react-redux";
 import { IMAGE_URL } from "../utils/constant";
 import CastCard from "./CastCard";
-import { useSelector } from "react-redux";
+import useCast from "@/hooks/useCast";
 
-const Cast = ({ casts, loading }) => {
-    // const { loading, error } = useCast();
-    // const casts = useSelector((store) => store.movies?.movieCast?.cast);
+const Cast = () => {
+    const { loading } = useCast();
+    const casts = useSelector((store) => store.movies?.movieCast?.cast);
 
     if (loading)
         return (

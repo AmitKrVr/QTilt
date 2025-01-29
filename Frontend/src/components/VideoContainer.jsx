@@ -1,9 +1,14 @@
 import { useSelector } from "react-redux";
 import { IMAGE_URL } from "../utils/constant";
 import useScrollToTop from "../hooks/useScrollToTop";
+import useMovieDetails from "@/hooks/useMovieDetails";
+import useTrailerVideo from "@/hooks/useTrailerVideo";
 
-const VideoContainer = ({ movieDetail, id, loading }) => {
+const VideoContainer = ({ id }) => {
+    const movieDetail = useMovieDetails(id);
     useScrollToTop(id);
+
+    const { loading } = useTrailerVideo();
 
     const youtubeKey = useSelector((store) => store.movies?.trailerVideo);
 
@@ -11,7 +16,7 @@ const VideoContainer = ({ movieDetail, id, loading }) => {
         return (
             <section className="h-[470px] w-full mb-8">
                 <div className="animate-pulse flex  rounded-lg overflow-hidden">
-                    <div className="w-[1060px] h-[470px] bg-gray-700"></div>
+                    <div className="w-[1160px] h-[470px] bg-gray-700"></div>
                 </div>
             </section>
         );

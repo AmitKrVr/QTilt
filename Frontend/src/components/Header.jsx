@@ -13,9 +13,10 @@ import {
     UserRoundPen,
 } from "lucide-react";
 
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { checkAuthStatus, logoutUser } from "../utils/authSlice";
+import { API_OPTIONS } from "@/utils/constant";
 
 const user_menu = [
     {
@@ -63,6 +64,16 @@ const Header = () => {
     const navigate = useNavigate();
     const { user, isAuthenticated } = useSelector((state) => state.auth);
 
+    const [searchQuery, setSearchQuery] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const dropdownRef = useRef(null);
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
     useEffect(() => {
         dispatch(checkAuthStatus());
     }, [dispatch]);
@@ -70,11 +81,52 @@ const Header = () => {
     const handleLogout = async () => {
         try {
             await dispatch(logoutUser()).unwrap();
-            navigate('/login');
+            navigate("/login");
         } catch (error) {
-            console.error('Logout failed:', error);
+            console.error("Logout failed:", error);
         }
     };
+
+    useEffect(() => {
+        const fetchMovies = async () => {
+            if (!searchQuery) {
+                setSearchResults([]);
+                return;
+            }
+
+            setIsLoading(true);
+            try {
+                const response = await fetch(
+                    `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(
+                        searchQuery
+                    )}&include_adult=false&language=en-US&page=1`,
+                    API_OPTIONS
+                );
+                const data = await response.json();
+                setSearchResults(data.results || []);
+            } catch (error) {
+                console.error("Error fetching movies:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        const debounceTimeout = setTimeout(() => fetchMovies(), 300);
+        return () => clearTimeout(debounceTimeout);
+    }, [searchQuery]);
+
+    const handleOutsideClick = (e) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+            setSearchQuery("");
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, []);
 
     return (
         <div className="w-full sticky top-0 left-0 z-50 bg-[var(--body-color)]">
@@ -90,8 +142,7 @@ const Header = () => {
                                         key={index}
                                         to={item.link}
                                         className="block px-4 py-2 text-sm text-black hover:bg-[var(--container-color)] hover:text-[var(--hover-color)] font-medium"
-                                        role="menuitem"
-                                    >
+                                        role="menuitem">
                                         {item.icon}
                                         {item.title}
                                     </NavLink>
@@ -104,27 +155,27 @@ const Header = () => {
                     <div className="md:flex items-center hidden">
                         <Link to="/" className="">
                             <div className="text-lg sm:text-2xl font-bold">
-                                Q<span className="text-[var(--main-color)]">Tilt</span>
+                                Q
+                                <span className="text-[var(--main-color)]">
+                                    Tilt
+                                </span>
                             </div>
                         </Link>
 
                         <div className="hidden md:block ml-10 space-x-6">
                             <Link
                                 to="/"
-                                className="font-medium px-3 py-1.5 hover:text-[var(--hover-color)] hover:bg-gray-700 rounded-md"
-                            >
+                                className="font-medium px-3 py-1.5 hover:text-[var(--hover-color)] hover:bg-gray-700 rounded-md">
                                 Home
                             </Link>
                             <Link
                                 to="/movies"
-                                className="font-medium px-3 py-1.5 hover:text-[var(--hover-color)] hover:bg-gray-700 rounded-md"
-                            >
+                                className="font-medium px-3 py-1.5 hover:text-[var(--hover-color)] hover:bg-gray-700 rounded-md">
                                 Movie
                             </Link>
                             <Link
                                 to="/trending"
-                                className="font-medium px-3 py-1.5 hover:text-[var(--hover-color)] hover:bg-gray-700 rounded-md"
-                            >
+                                className="font-medium px-3 py-1.5 hover:text-[var(--hover-color)] hover:bg-gray-700 rounded-md">
                                 Trending
                             </Link>
                         </div>
@@ -133,7 +184,10 @@ const Header = () => {
                     {/* Mobile Logo */}
                     <Link to="/" className="md:hidden">
                         <div className="text-lg sm:text-2xl font-bold">
-                            Q<span className="text-[var(--main-color)]">Tilt</span>
+                            Q
+                            <span className="text-[var(--main-color)]">
+                                Tilt
+                            </span>
                         </div>
                     </Link>
 
@@ -145,10 +199,49 @@ const Header = () => {
                                 className="w-full border-none outline-none text-[var(--text-color)] bg-transparent text-sm"
                                 type="search"
                                 placeholder="Search movie"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
                             />
                             <Search className="h-4 cursor-pointer text-[var(--text-color)] hover:text-[var(--hover-color)]" />
                         </div>
                         <Search className="block md:hidden cursor-pointer text-[var(--text-color)] hover:text-[var(--hover-color)]" />
+
+                        {/* Search Results Dropdown */}
+                        {searchQuery && searchResults.length > 0 && (
+                            <div
+                                ref={dropdownRef}
+                                className="absolute bg-white text-black rounded-lg shadow-md mt-2 top-16 w-full max-w-sm overflow-hidden z-50">
+                                {searchResults.slice(0, 5).map((movie) => (
+                                    <Link
+                                        to={`movie/${movie.id}`}
+                                        key={movie.id}
+                                        onClick={() => setSearchQuery("")}
+                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
+                                        {movie.poster_path && (
+                                            <img
+                                                src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
+                                                alt={movie.title}
+                                                className="w-12 h-18 rounded-md mr-4"
+                                            />
+                                        )}
+                                        <div>
+                                            <p className="font-medium line-clamp-1">
+                                                {movie.title}
+                                            </p>
+                                            <p className="text-sm text-gray-500">
+                                                {movie.release_date}
+                                            </p>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+
+                        {isLoading && (
+                            <div className="absolute top-16  bg-white text-black rounded-lg shadow-md mt-2 w-full max-w-sm overflow-hidden z-50 px-4 py-2">
+                                Loading...
+                            </div>
+                        )}
 
                         {/* User Menu */}
                         <div className="relative pl-3 py-5 group">
@@ -168,8 +261,7 @@ const Header = () => {
                                                     key={index}
                                                     to={item.link}
                                                     className="block px-4 py-2 text-sm text-black hover:bg-[var(--container-color)] hover:text-[var(--hover-color)] font-medium"
-                                                    role="menuitem"
-                                                >
+                                                    role="menuitem">
                                                     {item.icon}
                                                     {item.title}
                                                 </NavLink>
@@ -178,9 +270,9 @@ const Header = () => {
                                             <button
                                                 onClick={handleLogout}
                                                 className="w-full text-left block px-4 py-2 text-sm text-black hover:bg-[var(--container-color)] hover:text-[var(--hover-color)] font-medium"
-                                                role="menuitem"
-                                            >
-                                                <LogOut className="mr-2 h-5 w-5 inline" /> Sign Out
+                                                role="menuitem">
+                                                <LogOut className="mr-2 h-5 w-5 inline" />{" "}
+                                                Sign Out
                                             </button>
                                         </div>
                                     </div>

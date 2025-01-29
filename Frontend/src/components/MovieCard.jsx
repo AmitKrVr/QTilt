@@ -1,4 +1,16 @@
-const MovieCard = ({ movieDetails }) => {
+import useMovieDetails from "@/hooks/useMovieDetails";
+import Loading from "./Loading";
+
+const MovieCard = ({ id }) => {
+    const movieDetails = useMovieDetails(id);
+
+    if (!movieDetails)
+        return (
+            <div className="max-w-[1160px] m-auto min-h-[470px] grid place-content-center">
+                <Loading />
+            </div>
+        );
+
     const {
         original_title,
         overview,

@@ -1,9 +1,14 @@
+import { useSelector } from "react-redux";
 import { IMAGE_URL } from "../utils/constant";
 import CastCard from "./CastCard";
-import { useParams } from "react-router-dom";
+import useCast from "@/hooks/useCast";
 
-const Crew = ({ crews, loading }) => {
+const Crew = () => {
     // const { personId } = useParams();
+
+    const { loading } = useCast();
+
+    const crews = useSelector((store) => store.movies?.movieCast?.crew);
 
     if (loading)
         return (

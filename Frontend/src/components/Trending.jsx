@@ -3,12 +3,16 @@ import usePopularMovies from "../hooks/usePopularMovies";
 import { IMAGE_URL } from "../utils/constant";
 import { Link } from "react-router-dom";
 import useScrollToTop from "../hooks/useScrollToTop";
+import TrendingLoading from "./skeleton/TrendingLoading";
 
 const Trending = () => {
-    usePopularMovies();
+    const { loading } = usePopularMovies();
     const popularMovies = useSelector((store) => store?.movies?.popularMovies);
-
     useScrollToTop();
+
+    if (loading) {
+        return <TrendingLoading />;
+    }
 
     return (
         <div className="max-w-[1160px] mx-auto py-10">

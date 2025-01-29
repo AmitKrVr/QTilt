@@ -5,9 +5,10 @@ import useTopRatedMovies from "../hooks/useTopRatedMovies";
 import useUpcomingMovies from "../hooks/useUpcomingMovies";
 
 const SecondaryContainer = () => {
-    useNowPlayingMovies();
-    useTopRatedMovies();
-    useUpcomingMovies();
+    const { loading: nowPlayingLoading } = useNowPlayingMovies();
+    const { loading: topRatedLoading } = useTopRatedMovies();
+    const { loading: upcomingLoading } = useUpcomingMovies();
+
     const movies = useSelector((store) => store?.movies?.popularMovies);
     const nowPlaying = useSelector((store) => store?.movies?.nowPlayingMovies);
     const topRated = useSelector((store) => store?.movies?.topRatedMovies);
@@ -15,14 +16,23 @@ const SecondaryContainer = () => {
         (store) => store?.movies?.upcomingMovies
     );
 
-    if (!movies || movies.length === 0) return null;
-
-
     return (
         <>
-            <Section title="Now Playing Movies" movies={nowPlaying} />
-            <Section title="Top Rated Movies" movies={topRated} />
-            <Section title="Upcoming Movies" movies={upcomingMovies} />
+            <Section
+                title="Now Playing Movies"
+                movies={nowPlaying}
+                loading={nowPlayingLoading}
+            />
+            <Section
+                title="Top Rated Movies"
+                movies={topRated}
+                loading={topRatedLoading}
+            />
+            <Section
+                title="Upcoming Movies"
+                movies={upcomingMovies}
+                loading={upcomingLoading}
+            />
             <Section title="Popular Movies" movies={movies} />
         </>
     );

@@ -30,32 +30,18 @@ const Footer = () => {
                                 Company
                             </h3>
                             <ul>
-                                <li className="mb-4">
+                                {/* <li className="mb-4">
                                     <a
                                         className=" text-base font-medium text-gray-400 hover:text-gray-300"
                                         href="#">
                                         Features
                                     </a>
-                                </li>
+                                </li> */}
                                 <li className="mb-4">
                                     <a
                                         className=" text-base font-medium text-gray-400 hover:text-gray-300"
-                                        href="#">
-                                        Pricing
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a
-                                        className=" text-base font-medium text-gray-400 hover:text-gray-300"
-                                        href="#">
-                                        Affiliate Program
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        className=" text-base font-medium text-gray-400 hover:text-gray-300"
-                                        href="#">
-                                        Press Kit
+                                        href="/trending">
+                                        Trending
                                     </a>
                                 </li>
                             </ul>
@@ -70,29 +56,15 @@ const Footer = () => {
                                 <li className="mb-4">
                                     <a
                                         className=" text-base font-medium text-gray-400 hover:text-gray-300"
-                                        href="#">
+                                        href="/login">
                                         Account
                                     </a>
                                 </li>
                                 <li className="mb-4">
                                     <a
                                         className=" text-base font-medium text-gray-400 hover:text-gray-300"
-                                        href="#">
-                                        Help
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a
-                                        className=" text-base font-medium text-gray-400 hover:text-gray-300"
-                                        href="#">
+                                        href="/contact">
                                         Contact Us
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        className=" text-base font-medium text-gray-400 hover:text-gray-300"
-                                        href="#">
-                                        Customer Support
                                     </a>
                                 </li>
                             </ul>
@@ -107,14 +79,14 @@ const Footer = () => {
                                 <li className="mb-4">
                                     <a
                                         className=" text-base font-medium text-gray-400 hover:text-gray-300"
-                                        href="#">
+                                        href="/terms&conditions">
                                         Terms &amp; Conditions
                                     </a>
                                 </li>
                                 <li className="mb-4">
                                     <a
                                         className=" text-base font-medium text-gray-400 hover:text-gray-300"
-                                        href="#">
+                                        href="/privacy">
                                         Privacy Policy
                                     </a>
                                 </li>

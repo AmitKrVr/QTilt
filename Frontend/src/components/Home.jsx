@@ -12,7 +12,7 @@ const Home = () => {
         return (
             <section className="h-[470px] w-full mb-8">
                 <div className="animate-pulse flex  rounded-r-lg overflow-hidden">
-                    <div className="w-[1060px] h-[470px] bg-gray-700"></div>
+                    <div className="w-[1160px] h-[470px] bg-gray-700"></div>
                 </div>
             </section>
         );

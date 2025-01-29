@@ -15,6 +15,10 @@ import Profile from "./components/Profile";
 import Wishlist from "./components/Wishlist";
 import NotFound from "./components/NotFound";
 import Trending from "./components/Trending";
+import TermsAndConditions from "./components/TermsAndConditions";
+import Privacy from "./components/Privacy";
+import ContactUs from "./components/ContactUs";
+import SectionSkeleton from "./components/skeleton/SectionSkeleton";
 
 // Loading Spinner Component
 const LoadingSpinner = () => (
@@ -58,23 +62,6 @@ const PublicRoute = ({ children }) => {
     return children;
 };
 
-// Route for non-authenticated users only (login, signup)
-// const AuthRoute = ({ children }) => {
-//     const { isAuthenticated, initialized } = useSelector((state) => state.auth);
-//     const location = useLocation();
-//     const from = location.state?.from?.pathname || "/";
-
-//     if (!initialized) {
-//         return null;
-//     }
-
-//     if (isAuthenticated) {
-//         return <Navigate to={from} replace />;
-//     }
-
-//     return children;
-// };
-
 // Protected Route wrapper
 const PrivateRoute = ({ children }) => {
     const { isAuthenticated, initialized, loading } = useSelector(
@@ -105,6 +92,13 @@ function App() {
                         <Route path="trending" element={<Trending />} />
                         <Route path="/movie/:id" element={<MovieDetails />} />
                         <Route path="/person/:personId" element={<Person />} />
+                        <Route path="/contact" element={<ContactUs />} />
+                        <Route path="/loading" element={<SectionSkeleton />} />
+                        <Route
+                            path="/terms&conditions"
+                            element={<TermsAndConditions />}
+                        />
+                        <Route path="/privacy" element={<Privacy />} />
 
                         {/* Auth Routes */}
                         <Route

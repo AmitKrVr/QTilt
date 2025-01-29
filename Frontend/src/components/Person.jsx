@@ -1,19 +1,14 @@
 import usePersonData from "../hooks/usePersonData";
 import { IMAGE_URL } from "../utils/constant";
-import Loading from "./Loading";
 import useScrollToTop from "../hooks/useScrollToTop";
+import PersonLoading from "./skeleton/PersonLoading";
 
 const Person = () => {
     const { loading, error, data: person } = usePersonData();
 
     useScrollToTop();
 
-    if (loading)
-        return (
-            <div className="max-w-[1060px] m-auto min-h-[470px] grid place-content-center">
-                <Loading />
-            </div>
-        );
+    if (loading) return <PersonLoading />;
 
     if (error)
         return (
